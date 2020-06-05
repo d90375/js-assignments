@@ -78,7 +78,7 @@ function extractNameFromTemplate(value) {
  *   'cat'       => 'c'
  */
 function getFirstChar(value) {
-  return value.slice(0, 1);
+  return value[0];
 }
 
 /**
@@ -195,10 +195,10 @@ function extractEmails(str) {
  *
  */
 function getRectangleString(width, height) {
-  const topBorder = repeatString('─', width - 2);
-  return `┌${topBorder}┐\n`
+  const horizontalBorder = repeatString('─', width - 2);
+  return `┌${horizontalBorder}┐\n`
     + repeatString(`│${repeatString(' ', width - 2)}│\n`, height - 2)
-    + `└${topBorder}┘\n`;
+    + `└${horizontalBorder}┘\n`;
 }
 
 /**
@@ -264,9 +264,9 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-  const rowCount = 13; const suit = ['♣', '♦', '♥', '♠'];
+  const suit = ['♣', '♦', '♥', '♠'];
   const n = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-  return suit.indexOf(value.slice(-1))*rowCount + n.indexOf(value.slice(0, -1));
+  return suit.indexOf(value.slice(-1))*n.length + n.indexOf(value.slice(0, -1));
 }
 
 module.exports = {

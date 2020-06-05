@@ -66,7 +66,7 @@ function doubleArray(arr) {
  *    [] => []
  */
 function getArrayOfPositives(arr) {
-  return arr.filter(e => Math.sign(e) > 0);
+  return arr.filter(e => e > 0);
 }
 
 /**
@@ -98,7 +98,7 @@ function getArrayOfStrings(arr) {
  *    [ false, 0, NaN, '', undefined ]   => [ ]
  */
 function removeFalsyValues(arr) {
-  return arr.filter(e => !!e);
+  return arr.filter(e => e);
 }
 
 /**
@@ -170,7 +170,7 @@ function getHead(arr, n) {
  *    [ 'a', 'b', 'c', 'd'], 3  => [ 'b', 'c', 'd' ]
  */
 function getTail(arr, n) {
-  return arr.splice(arr.length - n, n);
+  return arr.splice(-n);
 }
 
 /**
@@ -227,7 +227,7 @@ function toArrayOfSquares(arr) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] => [ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 ]
  */
 function getMovingSum(arr) {
-  return arr.map((e => el => (e += el))(0));
+  return arr.reduce((acc, el, i) => [...acc, acc.length > 0 ? el + acc[i-1] : el], []);
 }
 
 /**
@@ -432,8 +432,8 @@ function sortCitiesArray(arr) {
  *           [0,0,0,0,1]]
  */
 function getIdentityMatrix(n) {
-  return [...new Array(n)].fill([]).reduce((acc, el, index) => {
-    acc.push([...new Array(n)].fill(0));
+  return new Array(n).fill([]).reduce((acc, el, index) => {
+    acc.push(new Array(n).fill(0));
     acc[index][index] = 1;
     return acc;
   }, []);
@@ -453,7 +453,7 @@ function getIdentityMatrix(n) {
  *     3, 3   => [ 3 ]
  */
 function getIntervalArray(start, end) {
-  return [...new Array(end - start + 1)].fill(0).map((el, i) => i + start);
+  return new Array(end - start + 1).fill(0).map((el, i) => i + start);
 }
 
 /**
@@ -468,7 +468,7 @@ function getIntervalArray(start, end) {
  *   [ 1, 1, 2, 2, 3, 3, 4, 4] => [ 1, 2, 3, 4]
  */
 function distinct(arr) {
-  return arr.filter((el, i, array) => array.indexOf(el) === i);
+  return [...new Set(arr)];
 }
 
 /**
@@ -496,7 +496,7 @@ function distinct(arr) {
  *   )
  *            =>
  *   Map {
- *    "Belarus" => ["Brest", "Grodno", "Minsk"],
+ *    "Belarus" => ["Brest" , "Grodno", "Minsk"],
  *    "Russia" => ["Omsk", "Samara"],
  *    "Poland" => ["Lodz"]
  *   }

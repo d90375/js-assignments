@@ -30,7 +30,8 @@
  * @return {RegExp}
  */
 function getRegexForGuid() {
-  throw new Error('Not implemented');
+  // eslint-disable-next-line max-len
+  return /^[{]{1}[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}[}]{1}$/i;
 }
 
 
@@ -46,13 +47,13 @@ function getRegexForGuid() {
  *  'slap two'                'part'
  *  'respite'
  *
- * NOTE : the regex lenth should be < 13
+ * NOTE : the regex length should be < 13
  *
  * @return {RegExp}
  *
  */
 function getRegexForPitSpot() {
-  throw new Error('Not implemented');
+  return /^(pi)|(s)/;
 }
 
 
@@ -71,7 +72,8 @@ function getRegexForPitSpot() {
  * @return {RegExp}
  */
 function getRegexForIPv4() {
-  throw new Error('Not implemented');
+  // eslint-disable-next-line max-len
+  return /^((2[0-5]\d?|[01]?\d\d?)\.){3}(2[0-5]\d|[01]?\d\d?)$/;
 }
 
 
@@ -90,7 +92,7 @@ function getRegexForIPv4() {
  * @return {RegExp}
  */
 function getRegexForSSN() {
-  throw new Error('Not implemented');
+  return /^\d{2}[1-9]-\d[1-9]-\d{3}[1-9]$/;
 }
 
 
@@ -115,7 +117,8 @@ function getRegexForSSN() {
  *   'Pa55'.match(validator) => false
  */
 function getPasswordValidator(minLength) {
-  throw new Error('Not implemented');
+  // eslint-disable-next-line max-len
+  return new RegExp(`^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{${minLength},})$`);
 }
 
 module.exports = {

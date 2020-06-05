@@ -70,7 +70,7 @@ function getAverage(value1, value2) {
  *   (4, 2) (1, 6) => 5
  */
 function getDistanceBetweenPoints(x1, y1, x2, y2) {
-  return Math.sqrt((Math.pow((x2 - x1), 2)) + (Math.pow((y2 - y1), 2)));
+  return Math.hypot((x2 - x1), (y2 - y1));
 }
 
 /**
@@ -124,7 +124,7 @@ function getAngleBetweenVectors(x1, y1, x2, y2) {
  *     0     => 0
  */
 function getLastDigit(value) {
-  return +value.toString().split('').reverse()[0];
+  return value % 10;
 }
 
 /**
@@ -198,15 +198,9 @@ function roundToPowerOfTen(num, pow) {
  *   17 => true
  */
 function isPrime(n) {
-  if (n === 1) return false;
   if (n === 2) return true;
-  if (n % 2 === 0) return false;
-  let bool = true;
-  for (let i = 3; i <= Math.floor(Math.sqrt(n)); i += 2) {
-    if (n % i === 0) bool = false;
-  }
-
-  return bool;
+  const num = Math.pow(2, (n - 1));
+  return num % n === 1;
 }
 
 /**

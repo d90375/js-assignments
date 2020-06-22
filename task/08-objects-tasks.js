@@ -1,4 +1,3 @@
-
 /** ************************************************************************************************
  *                                                                                                *
  * Plese read the following tutorial before implementing tasks:                                   *
@@ -6,7 +5,6 @@
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object        *
  *                                                                                                *
  ************************************************************************************************ */
-
 
 /**
  * Returns the rectagle object with width and height parameters and getArea() method
@@ -22,9 +20,13 @@
  *    console.log(r.getArea());   // => 200
  */
 function Rectangle(width, height) {
-  throw new Error('Not implemented');
+  this.width = width;
+  this.height = height;
 }
 
+Rectangle.prototype.getArea = function() {
+  return this.width * this.height;
+};
 
 /**
  * Returns the JSON representation of specified object
@@ -37,9 +39,8 @@ function Rectangle(width, height) {
  *    { width: 10, height : 20 } => '{"height":10,"width":20}'
  */
 function getJSON(obj) {
-  throw new Error('Not implemented');
+  return JSON.stringify(obj);
 }
-
 
 /**
  * Returns the object of specified type from JSON representation
@@ -53,9 +54,8 @@ function getJSON(obj) {
  *
  */
 function fromJSON(proto, json) {
-  throw new Error('Not implemented');
+  return Object.setPrototypeOf(JSON.parse(json), proto);
 }
-
 
 /**
  * Css selectors builder
@@ -112,35 +112,78 @@ function fromJSON(proto, json) {
  *  For more examples see unit tests.
  */
 
-const cssSelectorBuilder = {
+class CssSelector {
+  constructor() {
+    this.selector = '';
+    this.type = 0;
+    this.uniqueError =
+      "Element, id and pseudo-element should not occur more then one time inside the selector"; // eslint-disable-line
+    this.orderError = // eslint-disable-line
+      "Selector parts should be arranged in the following order: " + // eslint-disable-line
+      "element, id, class, attribute, pseudo-class, pseudo-element"; // eslint-disable-line
+  }
 
   element(value) {
-    throw new Error('Not implemented');
-  },
+    this.checkType(1);
+    this.selector += value;
+    return this;
+  }
 
   id(value) {
-    throw new Error('Not implemented');
-  },
+    this.checkType(2);
+    this.selector += `#${value}`;
+    return this;
+  }
 
   class(value) {
-    throw new Error('Not implemented');
-  },
+    this.checkType(3);
+    this.selector += `.${value}`;
+    return this;
+  }
 
   attr(value) {
-    throw new Error('Not implemented');
-  },
+    this.checkType(4);
+    this.selector += `[${value}]`;
+    return this;
+  }
 
   pseudoClass(value) {
-    throw new Error('Not implemented');
-  },
+    this.checkType(5);
+    this.selector += `:${value}`;
+    return this;
+  }
 
   pseudoElement(value) {
-    throw new Error('Not implemented');
-  },
+    this.checkType(6);
+    this.selector += `::${value}`;
+    return this;
+  }
 
   combine(selector1, combinator, selector2) {
-    throw new Error('Not implemented');
+    // eslint-disable-next-line max-len
+    this.selector = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+    return this;
   }
+
+  stringify() {
+    return this.selector;
+  }
+
+  checkType(type) {
+    if (type < this.type) throw this.orderError;
+    if (type === this.type && [1, 2, 6].includes(type)) throw this.uniqueError;
+    this.type = type;
+  }
+}
+
+const cssSelectorBuilder = {
+  element: value => new CssSelector().element(value),
+  id: value => new CssSelector().id(value),
+  class: value => new CssSelector().class(value),
+  attr: value => new CssSelector().attr(value),
+  pseudoClass: value => new CssSelector().pseudoClass(value),
+  pseudoElement: value => new CssSelector().pseudoElement(value),
+  combine: (s1, c, s2) => new CssSelector().combine(s1, c, s2)
 };
 
 module.exports = {

@@ -27,14 +27,12 @@
  *
  */
 function getFizzBuzz(num) {
-  switch (true) {  case num % 3 === 0 && num % 5 === 0:
-    return 'FizzBuzz';
-  case num % 3 === 0:
-    return 'Fizz';
-  case num % 5 === 0:
-    return 'Buzz';
-  default:
-    return num;}
+  switch (true)
+  {case num % 15 === 0: return 'FizzBuzz';
+  case num % 3 === 0: return 'Fizz';
+  case num % 5 === 0: return 'Buzz';
+  default: return num;
+  }
 }
 
 /**
@@ -124,15 +122,10 @@ function isTriangle(a, b, c) {
  *
  */
 function doRectanglesOverlap(rect1, rect2) {
-  if (rect2.top < rect1.top) {
-    const temp = rect1;
-    rect1 = rect2;
-    rect2 = temp;
-  }
-  return (    rect2.top >= rect1.top &&
-    rect2.top <= rect1.top + rect1.height &&
-    rect2.left >= rect1.left &&
-    rect2.left <= rect1.left + rect1.width);
+  return (
+    rect1.height >= rect2.top - rect1.top &&
+    rect1.width >= rect2.left - rect1.left
+  );
 }
 
 /**
@@ -162,8 +155,8 @@ function doRectanglesOverlap(rect1, rect2) {
  *
  */
 function isInsideCircle(circle, point) {
-  return Math.hypot(Math.abs(point.x - circle.center.x),
-    Math.abs(point.y - circle.center.y)) < circle.radius;
+  return (Math.hypot(Math.abs(point.x - circle.center.x),
+    Math.abs(point.y - circle.center.y)) < circle.radius);
 }
 
 /**
@@ -208,12 +201,10 @@ function findFirstSingleChar(str) {
  *
  */
 function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
-  if (a > b) {
-    const temp = a;
-    a = b;
-    b = temp;
-  }
-  return `${isStartIncluded ? '[' : '('}${a}, ${b}${isEndIncluded ? ']' : ')'}`;
+  const sortedArray = [a, b].sort();
+  const i = sortedArray[0];
+  const j = sortedArray[1];
+  return `${isStartIncluded ? '[' : '('}${i}, ${j}${isEndIncluded ? ']' : ')'}`;
 }
 
 /**
@@ -328,17 +319,11 @@ function getDigitalRoot(num) {
  *   '{[(<{[]}>)]}' = true
  */
 function isBracketsBalanced(str) {
-  const hash = { '(': ')', '{': '}', '[': ']', '<': '>' },
-    stack = [];
-  let curr;
-  for (let i = 0; i < str.length; i++) {
-    curr = str[i];
-    if (hash[curr]) stack.push(curr);
-    else {
-      if (curr !== hash[stack.pop()]) return false;
-    }
+  const regExp = /\(\)|\[]|{}|<>/g;
+  while (str.search(regExp) !== -1) {
+    str = str.replace(regExp, '');
   }
-  return stack.length === 0;
+  return str.length === 0;
 }
 
 /**
@@ -375,36 +360,47 @@ function isBracketsBalanced(str) {
 function timespanToHumanString(startDate, endDate) {
   const difference = endDate - startDate;
   const s = 1000;
-  const min = s*60;
-  const h = min*60;
-  const d = h*24;
-  const m = d*30;
+  const min = s * 60;
+  const h = min * 60;
+  const d = h * 24;
+  const m = d * 30;
 
-  switch(true) {
-  case difference <= 45000 :
+  switch (true) {
+  case difference <= 45000:
     return 'a few seconds ago';
-  case difference <= 1.5 * min :
+  case difference <= 1.5 * min:
     return 'a minute ago';
-  case difference <= 45 * min :
-    return difference < min * 2 ? '2 minutes ago' :
-      `${Math.floor(difference / min)} minutes ago`;
-  case difference <= 1.5 * h :
+  case difference <= 45 * min:
+    return difference < min * 2
+      ? '2 minutes ago'
+      : `${Math.floor(difference / min)} minutes ago`;
+  case difference <= 1.5 * h:
     return 'an hour ago';
-  case difference <= 22 * h :
-    return difference < 2 * h ? '2 hours ago' :
-      `${(difference / h) % 0.5 ? Math.round(difference / h) :
-        Math.floor(difference / h)} hours ago`;
-  case difference <= d * 1.5 :
+  case difference <= 22 * h:
+    return difference < 2 * h
+      ? '2 hours ago'
+      : `${
+        (difference / h) % 0.5
+          ? Math.round(difference / h)
+          : Math.floor(difference / h)
+      } hours ago`;
+  case difference <= d * 1.5:
     return 'a day ago';
-  case difference <= 25 * d :
-    return `${(difference / h) % 0.5 ? Math.round(difference / d) :
-      Math.floor(difference / d)} days ago`;
-  case difference <= 45 * d :
+  case difference <= 25 * d:
+    return `${
+      (difference / h) % 0.5
+        ? Math.round(difference / d)
+        : Math.floor(difference / d)
+    } days ago`;
+  case difference <= 45 * d:
     return 'a month ago';
-  case difference <= 345 * d :
-    return `${(difference / m) % 0.5 ? Math.round(difference / m) :
-      Math.floor(difference / m)} months ago`;
-  case difference <= 545 * d :
+  case difference <= 345 * d:
+    return `${
+      (difference / m) % 0.5
+        ? Math.round(difference / m)
+        : Math.floor(difference / m)
+    } months ago`;
+  case difference <= 545 * d:
     return 'a year ago';
   default:
     return `${Math.floor(difference / (365 * d))} years ago`;
@@ -517,21 +513,25 @@ function getMatrixProduct(m1, m2) {
  */
 function evaluateTicTacToePosition(position) {
   for (let i = 0; i < 3; i += 1) {
-    if ((position[i][0] === position[i][1])
-      && (position[i][1] === position[i][2])
-      && (position[i][0] !== undefined)) {
+    if (
+      position[i][0] === position[i][1] &&
+      position[i][1] === position[i][2] &&
+      position[i][0] !== undefined
+    ) {
       return position[i][0];
     }
-    if ((position[0][i] === position[1][i])
-      && (position[1][i] === position[2][i])
-      && (position[0][i] !== undefined)) {
+    if (
+      position[0][i] === position[1][i] &&
+      position[1][i] === position[2][i] &&
+      position[0][i] !== undefined
+    ) {
       return position[0][i];
     }
   }
-  if (((position[0][0] === position[1][1])
-    && (position[2][2] === position[1][1]))
-    || ((position[0][2] === position[1][1])
-      && (position[2][0] === position[1][1]))) {
+  if (
+    (position[0][0] === position[1][1] && position[2][2] === position[1][1]) ||
+    (position[0][2] === position[1][1] && position[2][0] === position[1][1])
+  ) {
     if (position[1][1] !== undefined) {
       return position[1][1];
     }

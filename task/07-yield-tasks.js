@@ -58,14 +58,14 @@ function* get99BottlesOfBeer() {
  *
  */
 function* getFibonacciSequence() {
-  let n = 39;
-  const infinite = !n && n !== 0;
-  let current = 0;
-  let next = 1;
-
-  while (infinite || n--) {
-    yield current;
-    [current, next] = [next, current + next];
+  yield 0;
+  yield 1;
+  let a = 0, b = 1;
+  while(true){
+    const c = a + b;
+    a = b;
+    b = c;
+    yield c;
   }
 }
 

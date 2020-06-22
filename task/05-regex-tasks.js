@@ -72,7 +72,6 @@ function getRegexForPitSpot() {
  * @return {RegExp}
  */
 function getRegexForIPv4() {
-  // eslint-disable-next-line max-len
   return /^((2[0-5]\d?|[01]?\d\d?)\.){3}(2[0-5]\d|[01]?\d\d?)$/;
 }
 
